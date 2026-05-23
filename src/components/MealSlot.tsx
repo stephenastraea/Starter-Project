@@ -23,17 +23,31 @@ export function MealSlot({ slot, label }: { slot: MealSlotName; label: string })
     if (!win) showToast(`Your browser blocked a new tab. Link: ${p.googleUrl}`);
   }
 
+  const countLabel =
+    items.length === 0
+      ? 'empty'
+      : `${items.length} ${items.length === 1 ? 'spot' : 'spots'}`;
+
   return (
     <div className="meal-slot">
-      <h3 className="meal-slot__heading">{label}</h3>
-      {items.length === 0 && <div className="meal-slot__empty">No picks yet.</div>}
+      <div className="meal-slot__head">
+        <h3 className="meal-slot__heading"><em>{label}</em></h3>
+        <span className="meal-slot__count">{countLabel}</span>
+      </div>
+      {items.length === 0 && (
+        <div className="meal-slot__empty">Add a saved spot here, or use + Itinerary from Search.</div>
+      )}
       <ul className="meal-slot__list">
         {items.map((p, index) => (
           <li key={p.fsq_id} className="meal-slot__item">
-            <div data-testid="meal-slot-name" className="meal-slot__name">
-              {p.name}
+            <span className="meal-slot__num" aria-hidden="true">{index + 1}</span>
+            <div className="meal-slot__thumb" data-initial={p.name.charAt(0)} aria-hidden="true" />
+            <div className="meal-slot__info">
+              <div data-testid="meal-slot-name" className="meal-slot__name">
+                {p.name}
+              </div>
+              <div className="meal-slot__meta">{p.categories[0] ?? 'Restaurant'}</div>
             </div>
-            <div className="meal-slot__meta">{p.categories[0] ?? 'Restaurant'}</div>
             <div className="meal-slot__actions">
               <button
                 aria-label="Move up"
@@ -47,7 +61,7 @@ export function MealSlot({ slot, label }: { slot: MealSlotName; label: string })
                   })
                 }
               >
-                ▲
+                ↑
               </button>
               <button
                 aria-label="Move down"
@@ -61,9 +75,9 @@ export function MealSlot({ slot, label }: { slot: MealSlotName; label: string })
                   })
                 }
               >
-                ▼
+                ↓
               </button>
-              <button onClick={() => openGoogle(p)}>Google Maps</button>
+              <button onClick={() => openGoogle(p)}>Maps</button>
               <button onClick={() => setMoveTarget(p)}>Move to…</button>
               <button
                 onClick={() =>
@@ -86,7 +100,9 @@ export function MealSlot({ slot, label }: { slot: MealSlotName; label: string })
           }}
         >
           <div className="add-itinerary-popover">
-            <div className="add-itinerary-popover__title">Move "{moveTarget.name}" to:</div>
+            <div className="add-itinerary-popover__title">
+              Move "<em>{moveTarget.name}</em>" to:
+            </div>
             <div className="add-itinerary-popover__slots">
               {MEAL_SLOTS.filter((s) => s !== slot).map((s) => (
                 <button

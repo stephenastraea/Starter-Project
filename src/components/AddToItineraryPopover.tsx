@@ -26,7 +26,9 @@ export function AddToItineraryPopover({
       }}
     >
       <div className="add-itinerary-popover">
-        <div className="add-itinerary-popover__title">Add "{place.name}" to:</div>
+        <div className="add-itinerary-popover__title">
+          Add "<em>{place.name}</em>" to…
+        </div>
         <div className="add-itinerary-popover__slots">
           {MEAL_SLOTS.map((slot) => (
             <button

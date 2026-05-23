@@ -1,8 +1,40 @@
-body {
-  margin: 0;
-  background: #fff;
+@import './styles/tokens.css';
+
+* {
+  box-sizing: border-box;
 }
 
+html,
+body,
 #root {
+  margin: 0;
+  height: 100%;
   min-height: 100svh;
+}
+
+body {
+  background: var(--surface-app);
+  color: var(--text-default);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Global focus ring — used by every interactive element unless overridden. */
+:focus-visible {
+  outline: 2px solid var(--color-terracotta);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

@@ -21,7 +21,7 @@ function renderShell() {
   render(
     <AppStateProvider>
       <ToastProvider>
-        <PanelShell />
+        <PanelShell onShareClick={() => {}} />
       </ToastProvider>
     </AppStateProvider>,
   );

@@ -43,10 +43,10 @@ export function ShareDialog({ open, onClose }: { open: boolean; onClose: () => v
       }}
     >
       <div className="add-itinerary-popover">
-        <div className="add-itinerary-popover__title">Share your plan</div>
+        <div className="add-itinerary-popover__title"><em>Share your trip</em></div>
         <textarea readOnly value={url} className="share-dialog__url" rows={3} />
         <div className="add-itinerary-popover__slots">
-          <button onClick={copy}>Copy</button>
+          <button onClick={copy} className="is-primary">Copy link</button>
           <button onClick={onClose}>Close</button>
         </div>
       </div>

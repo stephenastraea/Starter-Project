@@ -2,8 +2,19 @@ import { useEffect } from 'react';
 import { MapContainer, Marker, Popup, TileLayer, useMap, useMapEvents } from 'react-leaflet';
 import type { LatLng, Place } from '../types';
 import { useAppDispatch, useAppState } from '../state/AppStateProvider';
-import { BLUE_PIN, RED_PIN } from './map-icons';
+import { numberedPin, SAVED_PIN, SEARCH_PIN, USER_PIN } from './map-icons';
 import { useToast } from './Toast';
+
+function findItineraryNumber(
+  itinerary: import('../types').Itinerary,
+  fsqId: string,
+): number | null {
+  for (const slot of Object.keys(itinerary) as Array<keyof typeof itinerary>) {
+    const idx = itinerary[slot].findIndex((p) => p.fsq_id === fsqId);
+    if (idx >= 0) return idx + 1;
+  }
+  return null;
+}
 
 function ClickToPlace() {
   const dispatch = useAppDispatch();
@@ -36,27 +47,16 @@ function PlacePopup({ place }: { place: Place }) {
 
   return (
     <div className="pin-popup">
-      <div className="pin-popup__name">{place.name}</div>
-      <div className="pin-popup__meta">
-        {place.categories[0] ?? 'Restaurant'}
-        {place.rating !== undefined && (
-          <>
-            {' · '}
-            <span title="Foursquare rating">★ {place.rating.toFixed(1)}</span>
-          </>
-        )}
-        {place.tipsCount !== undefined && (
-          <>
-            {' · '}
-            <span title="Foursquare tips count">{place.tipsCount} tips</span>
-          </>
-        )}
-      </div>
+      <h3 className="pin-popup__name">{place.name}</h3>
+      <p className="pin-popup__meta">{place.categories[0] ?? 'Restaurant'}</p>
       <div className="pin-popup__actions">
-        <button onClick={openGoogle}>Open in Google Maps</button>
-        <button onClick={() => dispatch({ type: 'SAVE_PLACE', place })}>
-          {isSaved ? '★ Saved' : '☆ Save'}
+        <button
+          className="is-primary"
+          onClick={() => dispatch({ type: 'SAVE_PLACE', place })}
+        >
+          {isSaved ? 'Saved' : 'Save'}
         </button>
+        <button className="is-text" onClick={openGoogle}>Maps</button>
       </div>
     </div>
   );
@@ -83,23 +83,32 @@ export function MapView() {
       scrollWheelZoom
     >
       <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+        subdomains="abcd"
+        maxZoom={20}
       />
       <ClickToPlace />
       <FlyToCenter center={state.center} />
 
       {state.center && (
-        <Marker position={[state.center.lat, state.center.lng]} icon={BLUE_PIN} />
+        <Marker position={[state.center.lat, state.center.lng]} icon={USER_PIN} />
       )}
 
-      {state.results.map((place) => (
-        <Marker key={place.fsq_id} position={[place.lat, place.lng]} icon={RED_PIN}>
-          <Popup>
-            <PlacePopup place={place} />
-          </Popup>
-        </Marker>
-      ))}
+      {state.results.map((place) => {
+        const itineraryIndex = findItineraryNumber(state.itinerary, place.fsq_id);
+        const isSaved = state.saved.some((s) => s.fsq_id === place.fsq_id);
+        let icon = SEARCH_PIN;
+        if (itineraryIndex !== null) icon = numberedPin(itineraryIndex);
+        else if (isSaved) icon = SAVED_PIN;
+        return (
+          <Marker key={place.fsq_id} position={[place.lat, place.lng]} icon={icon}>
+            <Popup>
+              <PlacePopup place={place} />
+            </Popup>
+          </Marker>
+        );
+      })}
     </MapContainer>
   );
 }
