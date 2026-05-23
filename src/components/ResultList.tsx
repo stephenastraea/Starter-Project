@@ -1,6 +1,7 @@
 import { useAppDispatch, useAppState } from '../state/AppStateProvider';
 import type { Place } from '../types';
 import { useToast } from './Toast';
+import { RestaurantCard } from './RestaurantCard';
 
 export function ResultList({ onAddToItinerary }: { onAddToItinerary: (place: Place) => void }) {
   const state = useAppState();
@@ -34,14 +35,11 @@ export function ResultList({ onAddToItinerary }: { onAddToItinerary: (place: Pla
       {state.results.map((p) => {
         const isSaved = state.saved.some((s) => s.fsq_id === p.fsq_id);
         return (
-          <li key={p.fsq_id} className="result-list__item">
-            <div className="result-list__photo" aria-hidden="true">
-              {p.name.charAt(0)}
-            </div>
-            <div className="result-list__body">
-              <h3 className="result-list__name">{p.name}</h3>
-              <p className="result-list__meta">{p.categories[0] ?? 'Restaurant'}</p>
-              <div className="result-list__actions">
+          <RestaurantCard
+            key={p.fsq_id}
+            place={p}
+            actions={
+              <>
                 <button
                   className="is-primary"
                   onClick={() => dispatch({ type: 'SAVE_PLACE', place: p })}
@@ -52,9 +50,9 @@ export function ResultList({ onAddToItinerary }: { onAddToItinerary: (place: Pla
                 <button className="is-text" onClick={() => openGoogle(p)}>
                   Maps
                 </button>
-              </div>
-            </div>
-          </li>
+              </>
+            }
+          />
         );
       })}
     </ul>

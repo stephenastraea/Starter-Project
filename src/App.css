@@ -239,6 +239,10 @@ html, body, #root {
   font-size: 22px;
 }
 
+.result-list__photo::before {
+  content: attr(data-initial);
+}
+
 .result-list__body {
   flex: 1;
   min-width: 0;

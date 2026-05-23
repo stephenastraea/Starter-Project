@@ -1,6 +1,7 @@
 import { useAppDispatch, useAppState } from '../state/AppStateProvider';
 import type { Place } from '../types';
 import { useToast } from './Toast';
+import { RestaurantCard } from './RestaurantCard';
 
 export function SavedList({ onAddToItinerary }: { onAddToItinerary: (place: Place) => void }) {
   const state = useAppState();
@@ -35,14 +36,11 @@ export function SavedList({ onAddToItinerary }: { onAddToItinerary: (place: Plac
       </header>
       <ul className="result-list">
         {state.saved.map((p) => (
-          <li key={p.fsq_id} className="result-list__item">
-            <div className="result-list__photo" aria-hidden="true">
-              {p.name.charAt(0)}
-            </div>
-            <div className="result-list__body">
-              <h3 className="result-list__name">{p.name}</h3>
-              <p className="result-list__meta">{p.categories[0] ?? 'Restaurant'}</p>
-              <div className="result-list__actions">
+          <RestaurantCard
+            key={p.fsq_id}
+            place={p}
+            actions={
+              <>
                 <button onClick={() => onAddToItinerary(p)}>+ Itinerary</button>
                 <button onClick={() => dispatch({ type: 'REMOVE_SAVED', placeId: p.fsq_id })}>
                   Remove
@@ -50,9 +48,9 @@ export function SavedList({ onAddToItinerary }: { onAddToItinerary: (place: Plac
                 <button className="is-text" onClick={() => openGoogle(p)}>
                   Maps
                 </button>
-              </div>
-            </div>
-          </li>
+              </>
+            }
+          />
         ))}
       </ul>
     </>
