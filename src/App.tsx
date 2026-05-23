@@ -7,6 +7,7 @@ import { ToastProvider } from './components/Toast';
 import { MapView } from './components/MapView';
 import { PanelShell } from './components/PanelShell';
 import { ShareDialog } from './components/ShareDialog';
+import { InfoButton } from './components/InfoButton';
 import { getUserLocation } from './lib/geolocation';
 
 function GeolocateOnMount() {
@@ -55,6 +56,7 @@ function AppInner() {
         Share
       </button>
       <ShareDialog open={shareOpen} onClose={() => setShareOpen(false)} />
+      <InfoButton />
     </div>
   );
 }
