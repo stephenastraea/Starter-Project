@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { MapContainer, Marker, Popup, TileLayer, useMap, useMapEvents } from 'react-leaflet';
+import { MapContainer, Marker, Popup, TileLayer, ZoomControl, useMap, useMapEvents } from 'react-leaflet';
 import type { LatLng, Place } from '../types';
 import { useAppDispatch, useAppState } from '../state/AppStateProvider';
 import { numberedPin, SAVED_PIN, SEARCH_PIN, USER_PIN } from './map-icons';
@@ -81,6 +81,7 @@ export function MapView() {
       maxBoundsViscosity={1}
       className="map"
       scrollWheelZoom
+      zoomControl={false}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
@@ -88,6 +89,7 @@ export function MapView() {
         subdomains="abcd"
         maxZoom={20}
       />
+      <ZoomControl position="topright" />
       <ClickToPlace />
       <FlyToCenter center={state.center} />
 
