@@ -2,8 +2,19 @@ import { useEffect } from 'react';
 import { MapContainer, Marker, Popup, TileLayer, useMap, useMapEvents } from 'react-leaflet';
 import type { LatLng, Place } from '../types';
 import { useAppDispatch, useAppState } from '../state/AppStateProvider';
-import { BLUE_PIN, RED_PIN } from './map-icons';
+import { numberedPin, SAVED_PIN, SEARCH_PIN, USER_PIN } from './map-icons';
 import { useToast } from './Toast';
+
+function findItineraryNumber(
+  itinerary: import('../types').Itinerary,
+  fsqId: string,
+): number | null {
+  for (const slot of Object.keys(itinerary) as Array<keyof typeof itinerary>) {
+    const idx = itinerary[slot].findIndex((p) => p.fsq_id === fsqId);
+    if (idx >= 0) return idx + 1;
+  }
+  return null;
+}
 
 function ClickToPlace() {
   const dispatch = useAppDispatch();
@@ -92,16 +103,23 @@ export function MapView() {
       <FlyToCenter center={state.center} />
 
       {state.center && (
-        <Marker position={[state.center.lat, state.center.lng]} icon={BLUE_PIN} />
+        <Marker position={[state.center.lat, state.center.lng]} icon={USER_PIN} />
       )}
 
-      {state.results.map((place) => (
-        <Marker key={place.fsq_id} position={[place.lat, place.lng]} icon={RED_PIN}>
-          <Popup>
-            <PlacePopup place={place} />
-          </Popup>
-        </Marker>
-      ))}
+      {state.results.map((place) => {
+        const itineraryIndex = findItineraryNumber(state.itinerary, place.fsq_id);
+        const isSaved = state.saved.some((s) => s.fsq_id === place.fsq_id);
+        let icon = SEARCH_PIN;
+        if (itineraryIndex !== null) icon = numberedPin(itineraryIndex);
+        else if (isSaved) icon = SAVED_PIN;
+        return (
+          <Marker key={place.fsq_id} position={[place.lat, place.lng]} icon={icon}>
+            <Popup>
+              <PlacePopup place={place} />
+            </Popup>
+          </Marker>
+        );
+      })}
     </MapContainer>
   );
 }

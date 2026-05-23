@@ -599,3 +599,62 @@ html, body, #root {
   letter-spacing: 0.12em;
   color: var(--text-muted);
 }
+
+/* Map pins — Leaflet renders these as divIcons; the wrapper has the
+ * .map-pin and .map-pin--<variant> classes from map-icons.ts. */
+.map-pin {
+  background: transparent !important;
+  border: none !important;
+}
+
+.map-pin__teardrop {
+  display: block;
+  width: 28px;
+  height: 28px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  border: 3px solid var(--color-cream);
+  box-shadow: 0 4px 12px rgba(42, 31, 23, 0.3);
+  position: relative;
+}
+
+.map-pin--search .map-pin__teardrop {
+  background: var(--color-terracotta);
+}
+
+.map-pin--saved .map-pin__teardrop {
+  background: var(--color-olive);
+}
+
+.map-pin--user .map-pin__teardrop {
+  background: var(--color-olive);
+  width: 14px;
+  height: 14px;
+  border-width: 2px;
+  border-radius: 50%;
+  transform: none;
+  box-shadow: 0 0 0 6px rgba(74, 93, 35, 0.2);
+  margin: 10px 0 0 7px;
+}
+
+.map-pin__label {
+  position: absolute;
+  inset: 0;
+  transform: rotate(45deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-cream);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.map-pin:hover .map-pin__teardrop {
+  transform: rotate(-45deg) scale(1.08);
+}
+
+.map-pin--user:hover .map-pin__teardrop {
+  transform: scale(1.1);
+}
