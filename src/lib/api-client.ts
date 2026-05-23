@@ -3,8 +3,10 @@ import type { Place } from '../types';
 export type GeocodeResponse = { lat: number; lng: number; displayName: string };
 
 export class ApiError extends Error {
-  constructor(public status: number, message: string) {
+  status: number;
+  constructor(status: number, message: string) {
     super(message);
+    this.status = status;
   }
 }
 

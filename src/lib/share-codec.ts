@@ -51,14 +51,14 @@ function bytesToStream(bytes: Uint8Array): ReadableStream<Uint8Array> {
 
 async function gzipString(input: string): Promise<Uint8Array> {
   const stream = bytesToStream(new TextEncoder().encode(input))
-    .pipeThrough(new CompressionStream('gzip'));
+    .pipeThrough(new CompressionStream('gzip') as unknown as ReadableWritablePair<Uint8Array, Uint8Array>);
   const buf = await new Response(stream).arrayBuffer();
   return new Uint8Array(buf);
 }
 
 async function gunzipToString(input: Uint8Array): Promise<string> {
   const stream = bytesToStream(input)
-    .pipeThrough(new DecompressionStream('gzip'));
+    .pipeThrough(new DecompressionStream('gzip') as unknown as ReadableWritablePair<Uint8Array, Uint8Array>);
   const buf = await new Response(stream).arrayBuffer();
   return new TextDecoder().decode(buf);
 }
