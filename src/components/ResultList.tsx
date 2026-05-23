@@ -7,19 +7,21 @@ export function ResultList({ onAddToItinerary }: { onAddToItinerary: (place: Pla
   const dispatch = useAppDispatch();
   const showToast = useToast();
 
-  if (state.searching) return <div className="result-list result-list--empty">Searching…</div>;
+  if (state.searching) {
+    return <div className="result-list result-list--empty">Looking nearby…</div>;
+  }
   if (state.searchError) {
     return <div className="result-list result-list--empty">{state.searchError}</div>;
   }
   if (state.results.length === 0 && state.query) {
     return (
       <div className="result-list result-list--empty">
-        No places matched. Try a wider term or move the map.
+        No spots matched. Try a wider term, or pan the map.
       </div>
     );
   }
   if (state.results.length === 0) {
-    return <div className="result-list result-list--empty">Search for restaurants nearby.</div>;
+    return <div className="result-list result-list--empty">Where are you eating?</div>;
   }
 
   function openGoogle(p: Place) {
@@ -33,18 +35,24 @@ export function ResultList({ onAddToItinerary }: { onAddToItinerary: (place: Pla
         const isSaved = state.saved.some((s) => s.fsq_id === p.fsq_id);
         return (
           <li key={p.fsq_id} className="result-list__item">
-            <div className="result-list__name">{p.name}</div>
-            <div className="result-list__meta">
-              {p.categories[0] ?? 'Restaurant'}
-              {p.rating !== undefined && <> · ★ {p.rating.toFixed(1)}</>}
-              {p.tipsCount !== undefined && <> · {p.tipsCount} tips</>}
+            <div className="result-list__photo" aria-hidden="true">
+              {p.name.charAt(0)}
             </div>
-            <div className="result-list__actions">
-              <button onClick={() => openGoogle(p)}>Google Maps</button>
-              <button onClick={() => dispatch({ type: 'SAVE_PLACE', place: p })}>
-                {isSaved ? '★ Saved' : '☆ Save'}
-              </button>
-              <button onClick={() => onAddToItinerary(p)}>+ Itinerary</button>
+            <div className="result-list__body">
+              <h3 className="result-list__name">{p.name}</h3>
+              <p className="result-list__meta">{p.categories[0] ?? 'Restaurant'}</p>
+              <div className="result-list__actions">
+                <button
+                  className="is-primary"
+                  onClick={() => dispatch({ type: 'SAVE_PLACE', place: p })}
+                >
+                  {isSaved ? 'Saved' : 'Save'}
+                </button>
+                <button onClick={() => onAddToItinerary(p)}>+ Itinerary</button>
+                <button className="is-text" onClick={() => openGoogle(p)}>
+                  Maps
+                </button>
+              </div>
             </div>
           </li>
         );
