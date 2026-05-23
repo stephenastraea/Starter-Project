@@ -130,26 +130,44 @@ html, body, #root {
 
 .panel-shell {
   position: absolute;
-  background: #fff;
+  background: var(--surface-panel);
   z-index: 500;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-panel);
   display: flex;
   flex-direction: column;
+  color: var(--text-default);
+  font-family: var(--font-sans);
 }
+
 .panel-shell--desktop {
-  top: 16px;
-  left: 16px;
-  width: 360px;
+  top: var(--space-4);
+  left: var(--space-4);
+  width: 380px;
   max-height: calc(100vh - 32px);
-  border-radius: 8px;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--surface-border);
+  overflow: hidden;
 }
+
 .panel-shell--mobile {
   bottom: 0;
   left: 0;
   right: 0;
   max-height: 60vh;
-  border-radius: 12px 12px 0 0;
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  border-top: 1px solid var(--surface-border);
 }
+
+.panel-shell--mobile::before {
+  content: '';
+  display: block;
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--surface-border);
+  margin: 8px auto 0;
+}
+
 .panel-shell__tabs {
   display: flex;
   border-bottom: 1px solid #eee;
@@ -168,8 +186,9 @@ html, body, #root {
   font-weight: 600;
 }
 .panel-shell__body {
-  padding: 12px;
+  padding: var(--space-4) var(--space-5, 20px);
   overflow-y: auto;
+  flex: 1;
 }
 .add-itinerary-overlay {
   position: fixed;
