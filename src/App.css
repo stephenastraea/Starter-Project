@@ -58,39 +58,89 @@ html, body, #root {
   max-width: 80%;
   font-size: 14px;
 }
+.location-bar {
+  margin-bottom: var(--space-3);
+}
+
 .location-bar form {
   display: flex;
-  gap: 6px;
-  margin-bottom: 6px;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
 }
+
 .location-bar input {
   flex: 1;
-  padding: 6px 8px;
-  font-size: 14px;
-}
-.location-bar button {
-  padding: 6px 10px;
-  cursor: pointer;
-}
-.location-bar__error {
-  color: #c62828;
-  font-size: 12px;
-  margin-bottom: 6px;
-}
-.banner {
-  background: #fff3cd;
-  border: 1px solid #ffe69c;
-  padding: 8px;
-  border-radius: 4px;
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-md);
+  padding: 9px 12px;
+  font-family: var(--font-sans);
   font-size: 13px;
-  margin-bottom: 6px;
+  color: var(--text-default);
+  min-width: 0;
+}
+
+.location-bar input::placeholder {
+  color: var(--text-muted);
+  opacity: 1;
+}
+
+.location-bar button {
+  background: transparent;
+  border: 1px solid var(--surface-border);
+  color: var(--text-default);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.location-bar button:hover:not(:disabled) {
+  background: var(--surface-card);
+}
+
+.location-bar button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.location-bar__error {
+  color: var(--color-terracotta);
+  font-size: 12px;
+  margin-bottom: var(--space-2);
+}
+
+.banner {
+  background: rgba(194, 65, 12, 0.1);
+  border: 1px solid rgba(194, 65, 12, 0.25);
+  color: var(--text-default);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  margin-bottom: var(--space-3);
 }
 
 .search-bar {
   width: 100%;
-  padding: 8px 10px;
-  font-size: 14px;
-  margin-bottom: 8px;
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--text-default);
+  margin-bottom: var(--space-4);
+}
+
+.search-bar::placeholder {
+  color: var(--text-muted);
+  opacity: 1;
 }
 
 .result-list {
