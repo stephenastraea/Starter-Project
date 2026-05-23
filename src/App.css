@@ -249,3 +249,25 @@ html, body, #root {
   padding: 3px 6px;
   cursor: pointer;
 }
+
+.share-dialog__url {
+  width: 100%;
+  font-family: monospace;
+  font-size: 11px;
+  padding: 6px;
+  margin-bottom: 12px;
+  resize: none;
+}
+.share-button {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 600;
+  padding: 8px 12px;
+  background: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
