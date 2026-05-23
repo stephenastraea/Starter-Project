@@ -113,16 +113,31 @@ html, body, #root {
 
 .toast {
   position: fixed;
-  bottom: 24px;
+  bottom: var(--space-6);
   left: 50%;
   transform: translateX(-50%);
-  background: #222;
-  color: #fff;
-  padding: 10px 16px;
-  border-radius: 8px;
-  z-index: 1000;
+  background: var(--color-espresso);
+  color: var(--text-inverted);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-modal);
+  z-index: 2000;
   max-width: 80%;
-  font-size: 14px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  animation: toast-in var(--dur-base) var(--ease-out);
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(8px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .toast {
+    bottom: auto;
+    top: var(--space-4);
+  }
 }
 .location-bar {
   margin-bottom: var(--space-3);
