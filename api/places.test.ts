@@ -1,10 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import handler from './places';
 
-type MockReq = {
-  method: string;
-  query: Record<string, string | string[] | undefined>;
-};
 type MockRes = {
   statusCode: number;
   body: unknown;
