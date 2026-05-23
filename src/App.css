@@ -58,3 +58,30 @@ html, body, #root {
   max-width: 80%;
   font-size: 14px;
 }
+.location-bar form {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.location-bar input {
+  flex: 1;
+  padding: 6px 8px;
+  font-size: 14px;
+}
+.location-bar button {
+  padding: 6px 10px;
+  cursor: pointer;
+}
+.location-bar__error {
+  color: #c62828;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+.banner {
+  background: #fff3cd;
+  border: 1px solid #ffe69c;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
