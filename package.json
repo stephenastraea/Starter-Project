@@ -13,7 +13,6 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
-    "@vercel/node": "^5.8.4",
     "leaflet": "^1.9.4",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
@@ -28,6 +27,7 @@
     "@types/node": "^24.12.2",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "@vercel/node": "^5.8.4",
     "@vitejs/plugin-react": "^6.0.1",
     "@vitest/ui": "^4.1.7",
     "eslint": "^10.2.1",
