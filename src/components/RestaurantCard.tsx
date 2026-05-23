@@ -1,6 +1,7 @@
-import { useRef, type ReactNode } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import type { Place } from '../types';
 import { usePhoto } from './usePhoto';
+import { useAppDispatch } from '../state/AppStateProvider';
 
 export function RestaurantCard({
   place,
@@ -10,10 +11,17 @@ export function RestaurantCard({
   actions: ReactNode;
 }) {
   const photoRef = useRef<HTMLDivElement | null>(null);
+  const dispatch = useAppDispatch();
   const photoUrl = usePhoto(place.fsq_id, {
     initialPhotoUrl: place.photoUrl,
     ref: photoRef,
   });
+
+  useEffect(() => {
+    if (photoUrl && !place.photoUrl) {
+      dispatch({ type: 'SET_PLACE_PHOTO', placeId: place.fsq_id, photoUrl });
+    }
+  }, [photoUrl, place.photoUrl, place.fsq_id, dispatch]);
 
   return (
     <li className="result-list__item">

@@ -22,7 +22,8 @@ export type Action =
   | { type: 'REMOVE_FROM_ITINERARY'; placeId: string; slot: MealSlot }
   | { type: 'MOVE_IN_ITINERARY'; placeId: string; slot: MealSlot; direction: 'up' | 'down' }
   | { type: 'SET_PANEL_TAB'; tab: PanelTab }
-  | { type: 'HYDRATE'; saved: Place[]; itinerary: Itinerary };
+  | { type: 'HYDRATE'; saved: Place[]; itinerary: Itinerary }
+  | { type: 'SET_PLACE_PHOTO'; placeId: string; photoUrl: string };
 
 function removeFromAllSlots(itinerary: Itinerary, placeId: string): Itinerary {
   const next: Itinerary = { ...EMPTY_ITINERARY };
@@ -103,6 +104,22 @@ export function reducer(state: AppState, action: Action): AppState {
 
     case 'HYDRATE':
       return { ...state, saved: action.saved, itinerary: action.itinerary };
+
+    case 'SET_PLACE_PHOTO': {
+      const apply = (p: Place): Place =>
+        p.fsq_id === action.placeId && !p.photoUrl ? { ...p, photoUrl: action.photoUrl } : p;
+      return {
+        ...state,
+        results: state.results.map(apply),
+        saved: state.saved.map(apply),
+        itinerary: {
+          breakfast: state.itinerary.breakfast.map(apply),
+          lunch: state.itinerary.lunch.map(apply),
+          dinner: state.itinerary.dinner.map(apply),
+          snacks: state.itinerary.snacks.map(apply),
+        },
+      };
+    }
 
     default:
       return state;
