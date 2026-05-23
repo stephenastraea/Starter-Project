@@ -21,21 +21,18 @@ function useIsMobile(): boolean {
   return isMobile;
 }
 
-export function PanelShell() {
+export function PanelShell({ onShareClick }: { onShareClick: () => void }) {
   const state = useAppState();
   const dispatch = useAppDispatch();
   const isMobile = useIsMobile();
   const [pendingForItinerary, setPendingForItinerary] = useState<Place | null>(null);
 
-  const tabs: { id: PanelTab; label: string }[] = [
+  const itineraryCount = Object.values(state.itinerary).reduce((acc, arr) => acc + arr.length, 0);
+
+  const tabs: { id: PanelTab; label: string; count?: number }[] = [
     { id: 'search', label: 'Search' },
-    { id: 'saved', label: `Saved (${state.saved.length})` },
-    {
-      id: 'itinerary',
-      label: `Itinerary (${
-        Object.values(state.itinerary).reduce((acc, arr) => acc + arr.length, 0)
-      })`,
-    },
+    { id: 'saved', label: 'Saved', count: state.saved.length },
+    { id: 'itinerary', label: 'Itinerary', count: itineraryCount },
   ];
 
   return (
@@ -43,18 +40,35 @@ export function PanelShell() {
       data-testid="panel-shell"
       className={`panel-shell ${isMobile ? 'panel-shell--mobile' : 'panel-shell--desktop'}`}
     >
+      <div className="panel-shell__header">
+        <h1 className="panel-shell__trip-name">Your trip</h1>
+        <button
+          type="button"
+          className="panel-shell__share"
+          onClick={onShareClick}
+        >
+          Share
+        </button>
+      </div>
       <div className="panel-shell__tabs" role="tablist">
-        {tabs.map((t) => (
-          <button
-            key={t.id}
-            role="tab"
-            aria-selected={state.panelTab === t.id}
-            className={`panel-shell__tab ${state.panelTab === t.id ? 'is-active' : ''}`}
-            onClick={() => dispatch({ type: 'SET_PANEL_TAB', tab: t.id })}
-          >
-            {t.label}
-          </button>
-        ))}
+        {tabs.map((t) => {
+          const accName = t.count !== undefined ? `${t.label} (${t.count})` : t.label;
+          return (
+            <button
+              key={t.id}
+              role="tab"
+              aria-selected={state.panelTab === t.id}
+              aria-label={accName}
+              className={`panel-shell__tab ${state.panelTab === t.id ? 'is-active' : ''}`}
+              onClick={() => dispatch({ type: 'SET_PANEL_TAB', tab: t.id })}
+            >
+              <span className="panel-shell__tab-label">{t.label}</span>
+              {t.count !== undefined && (
+                <span className="panel-shell__tab-count"> · {t.count}</span>
+              )}
+            </button>
+          );
+        })}
       </div>
       <div className="panel-shell__body">
         {state.panelTab === 'search' && (

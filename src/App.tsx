@@ -50,10 +50,7 @@ function AppInner() {
       <PersistenceMount />
       <GeolocateOnMount />
       <MapView />
-      <PanelShell />
-      <button className="share-button" onClick={() => setShareOpen(true)}>
-        Share
-      </button>
+      <PanelShell onShareClick={() => setShareOpen(true)} />
       <ShareDialog open={shareOpen} onClose={() => setShareOpen(false)} />
     </div>
   );

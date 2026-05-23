@@ -168,22 +168,79 @@ html, body, #root {
   margin: 8px auto 0;
 }
 
+.panel-shell__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-5, 20px) var(--space-3);
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.panel-shell__trip-name {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 18px;
+  font-variation-settings: 'opsz' 96;
+  margin: 0;
+  letter-spacing: -0.005em;
+}
+
+.panel-shell__share {
+  background: transparent;
+  border: 1px solid var(--surface-border);
+  color: var(--text-default);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 6px 14px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.panel-shell__share:hover {
+  background: var(--surface-card);
+}
+
 .panel-shell__tabs {
   display: flex;
-  border-bottom: 1px solid #eee;
+  gap: var(--space-6);
+  padding: 0 var(--space-5, 20px);
+  border-bottom: 1px solid var(--surface-border);
 }
+
 .panel-shell__tab {
-  flex: 1;
-  padding: 10px 8px;
   background: none;
   border: none;
-  border-bottom: 2px solid transparent;
+  padding: var(--space-3) 0;
+  margin: 0;
   cursor: pointer;
-  font-size: 13px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  border-bottom: 1.5px solid transparent;
+  margin-bottom: -1px;
+  transition: color var(--dur-fast) var(--ease-out);
 }
+
 .panel-shell__tab.is-active {
-  border-bottom-color: #1976d2;
-  font-weight: 600;
+  color: var(--text-default);
+  border-bottom-color: var(--color-terracotta);
+}
+
+.panel-shell__tab-count {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.panel-shell__tab.is-active .panel-shell__tab-count {
+  color: var(--text-muted);
 }
 .panel-shell__body {
   padding: var(--space-4) var(--space-5, 20px);
@@ -276,17 +333,4 @@ html, body, #root {
   padding: 6px;
   margin-bottom: 12px;
   resize: none;
-}
-.share-button {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  z-index: 600;
-  padding: 8px 12px;
-  background: #1976d2;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 13px;
 }
