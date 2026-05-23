@@ -92,8 +92,19 @@ function sanitizeItinerary(raw: unknown): Itinerary | null {
   return result;
 }
 
+function stripPhoto({ photoUrl: _, ...rest }: Place): Place {
+  void _;
+  return rest;
+}
+
 export async function encodeShareState(state: ShareState): Promise<string> {
-  const json = JSON.stringify(state);
+  const stripped: ShareState = {
+    saved: state.saved.map(stripPhoto),
+    itinerary: Object.fromEntries(
+      MEAL_SLOTS.map((slot) => [slot, state.itinerary[slot as MealSlot].map(stripPhoto)])
+    ) as Itinerary,
+  };
+  const json = JSON.stringify(stripped);
   const bytes = await gzipString(json);
   return toBase64Url(bytes);
 }

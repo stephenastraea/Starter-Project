@@ -19,11 +19,12 @@ export const SEARCH_PIN = makePin('search');
 export const SAVED_PIN = makePin('saved');
 export const USER_PIN = makePin('user');
 
-export function numberedPin(n: number): L.DivIcon {
-  return makePin('search', String(n));
-}
+const numberedPinCache = new Map<number, L.DivIcon>();
 
-// Kept for backwards compatibility with imports during migration; remove
-// after MapView is updated.
-export const RED_PIN = SEARCH_PIN;
-export const BLUE_PIN = USER_PIN;
+export function numberedPin(n: number): L.DivIcon {
+  const cached = numberedPinCache.get(n);
+  if (cached) return cached;
+  const icon = makePin('search', String(n));
+  numberedPinCache.set(n, icon);
+  return icon;
+}
