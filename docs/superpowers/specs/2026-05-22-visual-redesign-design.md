@@ -73,9 +73,9 @@ No API key required. Attribution string: `© OpenStreetMap contributors © CARTO
 
 **Pins.** Custom `L.divIcon` rendered as a terracotta teardrop (28×28, `border-radius: 50% 50% 50% 0`, rotated `-45deg`) with a 3px Cream stroke and a soft shadow. Variants:
 
-- Default: terracotta fill
-- Saved: olive fill
-- Itinerary: numbered (sequence within meal slot), terracotta or olive depending on whether also saved
+- Default (search result): terracotta fill, no label
+- Saved: olive fill, no label
+- Itinerary: terracotta fill with a numbered label (the sequence within its meal slot). Itinerary state takes precedence over saved state for pin appearance — a place that's both saved and in the itinerary renders as the numbered terracotta pin.
 - Hover/active: slight scale-up, accent ring
 
 Pin contents are pure CSS — no SVG sprites to ship.
@@ -134,7 +134,7 @@ Pin contents are pure CSS — no SVG sprites to ship.
 - Photo fallback: Linen→Sand gradient with the first letter of the restaurant set in Fraunces italic at ~20px Stone color — looks intentional, never broken
 - Action variants:
   - Solid (terracotta): primary action (`Save` on search results)
-  - Ghost (1px Espresso border, transparent): secondary (`+ Trip`, `Remove`)
+  - Ghost (1px Espresso border, transparent): secondary (`+ Itinerary`, `Remove`)
   - Text link (terracotta underline, no border): tertiary (`Maps`)
 
 **Search tab.** Search input and location bar at the top with new editorial styling:
