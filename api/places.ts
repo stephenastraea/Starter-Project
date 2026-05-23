@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { mapFoursquareResult, type FsqRaw } from './_lib/foursquare';
+import { mapFoursquareResult, type FsqRaw } from './_lib/foursquare.js';
 
 const FSQ_URL = 'https://places-api.foursquare.com/places/search';
 const FSQ_API_VERSION = '2025-06-17';

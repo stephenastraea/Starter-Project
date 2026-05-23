@@ -1,5 +1,5 @@
-import type { Place } from '../../src/types';
-import { buildGoogleMapsUrl } from '../../src/lib/google-url';
+import type { Place } from '../../src/types.js';
+import { buildGoogleMapsUrl } from '../../src/lib/google-url.js';
 
 // Foursquare Places API (places-api.foursquare.com, 2025-06-17+) response shape.
 // Includes legacy v3 fields as optional so the mapper stays backwards-compatible
