@@ -171,3 +171,37 @@ html, body, #root {
   padding: 12px;
   overflow-y: auto;
 }
+.add-itinerary-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.add-itinerary-popover {
+  background: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  width: min(320px, 90vw);
+}
+.add-itinerary-popover__title {
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.add-itinerary-popover__slots {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.add-itinerary-popover__slots button {
+  padding: 8px;
+  cursor: pointer;
+}
+.add-itinerary-popover__cancel {
+  width: 100%;
+  padding: 6px;
+  cursor: pointer;
+}
