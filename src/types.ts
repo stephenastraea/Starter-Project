@@ -22,6 +22,7 @@ export type Place = {
   rating?: number;
   tipsCount?: number;
   googleUrl: string;
+  photoUrl?: string;
 };
 
 export type GeolocationStatus = 'idle' | 'pending' | 'granted' | 'denied';
