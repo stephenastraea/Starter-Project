@@ -455,36 +455,96 @@ html, body, #root {
 .add-itinerary-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(42, 31, 23, 0.45);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  padding: var(--space-4);
 }
+
 .add-itinerary-popover {
-  background: #fff;
-  padding: 16px;
-  border-radius: 8px;
-  width: min(320px, 90vw);
+  background: var(--surface-card);
+  padding: var(--space-6);
+  border-radius: var(--radius-xl);
+  width: min(360px, 100%);
+  box-shadow: var(--shadow-modal);
+  border: 1px solid var(--surface-border);
 }
+
 .add-itinerary-popover__title {
+  font-family: var(--font-serif);
+  font-style: italic;
   font-weight: 600;
-  margin-bottom: 12px;
+  font-size: 18px;
+  margin-bottom: var(--space-4);
+  color: var(--text-default);
 }
+
 .add-itinerary-popover__slots {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 12px;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
 }
+
 .add-itinerary-popover__slots button {
-  padding: 8px;
+  background: transparent;
+  border: 1px solid var(--text-default);
+  color: var(--text-default);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 10px;
+  border-radius: var(--radius-md);
   cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out);
 }
+
+.add-itinerary-popover__slots button:hover {
+  background: var(--surface-panel);
+}
+
 .add-itinerary-popover__cancel {
   width: 100%;
-  padding: 6px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: var(--space-2);
   cursor: pointer;
+}
+
+.add-itinerary-popover__cancel:hover {
+  color: var(--text-default);
+}
+
+.share-dialog__url {
+  width: 100%;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: var(--surface-panel);
+  color: var(--text-default);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  margin-bottom: var(--space-3);
+  resize: none;
+}
+
+.add-itinerary-popover__slots button.is-primary {
+  background: var(--color-terracotta);
+  border-color: var(--color-terracotta);
+  color: var(--text-inverted);
+}
+
+.add-itinerary-popover__slots button.is-primary:hover {
+  background: #a8370a;
 }
 
 .meal-slot {
@@ -633,15 +693,6 @@ html, body, #root {
 .meal-slot__actions button:disabled {
   opacity: 0.3;
   cursor: not-allowed;
-}
-
-.share-dialog__url {
-  width: 100%;
-  font-family: monospace;
-  font-size: 11px;
-  padding: 6px;
-  margin-bottom: 12px;
-  resize: none;
 }
 
 .section-header {
