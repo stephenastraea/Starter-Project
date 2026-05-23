@@ -1,7 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { mapFoursquareResult, type FsqRaw } from './_lib/foursquare';
 
-const FSQ_URL = 'https://api.foursquare.com/v3/places/search';
+const FSQ_URL = 'https://places-api.foursquare.com/places/search';
+const FSQ_API_VERSION = '2025-06-17';
 const FOOD_CATEGORY = '13065';
 const MAX_RADIUS_M = 100_000;
 
@@ -46,14 +47,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     categories: FOOD_CATEGORY,
     query: q,
     limit: '20',
-    sort: 'RATING',
-    fields: 'fsq_id,name,geocodes,location,categories,rating,stats',
   });
 
   let upstream: Response;
   try {
     upstream = await fetch(`${FSQ_URL}?${params}`, {
-      headers: { Authorization: key, Accept: 'application/json' },
+      headers: {
+        Authorization: `Bearer ${key}`,
+        Accept: 'application/json',
+        'X-Places-Api-Version': FSQ_API_VERSION,
+      },
     });
   } catch {
     return res.status(502).json({ error: 'Upstream search unreachable' });

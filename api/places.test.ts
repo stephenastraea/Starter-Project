@@ -105,7 +105,7 @@ describe('/api/places', () => {
     );
     const [, init] = fetchMock.mock.calls[0];
     expect((init as RequestInit).headers).toMatchObject({
-      Authorization: 'test-key',
+      Authorization: 'Bearer test-key',
     });
   });
 
