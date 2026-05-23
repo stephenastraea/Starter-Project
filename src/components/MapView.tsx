@@ -73,6 +73,12 @@ export function MapView() {
     <MapContainer
       center={defaultCenter}
       zoom={defaultZoom}
+      minZoom={3}
+      maxBounds={[
+        [-85, -180],
+        [85, 180],
+      ]}
+      maxBoundsViscosity={1}
       className="map"
       scrollWheelZoom
     >
