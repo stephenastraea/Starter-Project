@@ -41,7 +41,6 @@ export function MealSlot({ slot, label }: { slot: MealSlotName; label: string })
         {items.map((p, index) => (
           <li key={p.fsq_id} className="meal-slot__item">
             <span className="meal-slot__num" aria-hidden="true">{index + 1}</span>
-            <div className="meal-slot__thumb" data-initial={p.name.charAt(0)} aria-hidden="true" />
             <div className="meal-slot__info">
               <div data-testid="meal-slot-name" className="meal-slot__name">
                 {p.name}
