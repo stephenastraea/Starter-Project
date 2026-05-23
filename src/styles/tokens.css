@@ -1,0 +1,58 @@
+/* Design tokens — Warm Editorial direction.
+ * Imported once from src/index.css. All component styles read from these
+ * custom properties. Do not hard-code colors / fonts / spacing in App.css. */
+
+:root {
+  /* Color */
+  --color-bone: #faf6ee;
+  --color-linen: #f4ecdf;
+  --color-cream: #fffaf0;
+  --color-sand: #e6d6b8;
+  --color-terracotta: #c2410c;
+  --color-olive: #4a5d23;
+  --color-espresso: #2a1f17;
+  --color-stone: #8a7563;
+
+  /* Surfaces */
+  --surface-app: var(--color-bone);
+  --surface-panel: var(--color-linen);
+  --surface-card: var(--color-cream);
+  --surface-border: var(--color-sand);
+
+  /* Text */
+  --text-default: var(--color-espresso);
+  --text-muted: var(--color-stone);
+  --text-accent: var(--color-terracotta);
+  --text-category: var(--color-olive);
+  --text-inverted: var(--color-cream);
+
+  /* Typography */
+  --font-serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* Spacing — 4px grid */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+
+  /* Radii */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --radius-xl: 14px;
+
+  /* Shadows */
+  --shadow-panel: 0 12px 32px rgba(42, 31, 23, 0.12);
+  --shadow-popup: 0 8px 24px rgba(42, 31, 23, 0.12);
+  --shadow-modal: 0 16px 48px rgba(42, 31, 23, 0.18);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+}
