@@ -47,27 +47,16 @@ function PlacePopup({ place }: { place: Place }) {
 
   return (
     <div className="pin-popup">
-      <div className="pin-popup__name">{place.name}</div>
-      <div className="pin-popup__meta">
-        {place.categories[0] ?? 'Restaurant'}
-        {place.rating !== undefined && (
-          <>
-            {' · '}
-            <span title="Foursquare rating">★ {place.rating.toFixed(1)}</span>
-          </>
-        )}
-        {place.tipsCount !== undefined && (
-          <>
-            {' · '}
-            <span title="Foursquare tips count">{place.tipsCount} tips</span>
-          </>
-        )}
-      </div>
+      <h3 className="pin-popup__name">{place.name}</h3>
+      <p className="pin-popup__meta">{place.categories[0] ?? 'Restaurant'}</p>
       <div className="pin-popup__actions">
-        <button onClick={openGoogle}>Open in Google Maps</button>
-        <button onClick={() => dispatch({ type: 'SAVE_PLACE', place })}>
-          {isSaved ? '★ Saved' : '☆ Save'}
+        <button
+          className="is-primary"
+          onClick={() => dispatch({ type: 'SAVE_PLACE', place })}
+        >
+          {isSaved ? 'Saved' : 'Save'}
         </button>
+        <button className="is-text" onClick={openGoogle}>Maps</button>
       </div>
     </div>
   );
