@@ -85,3 +85,10 @@ html, body, #root {
   font-size: 13px;
   margin-bottom: 6px;
 }
+
+.search-bar {
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
