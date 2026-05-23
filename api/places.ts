@@ -5,6 +5,11 @@ const FSQ_URL = 'https://places-api.foursquare.com/places/search';
 const FSQ_API_VERSION = '2025-06-17';
 const FOOD_CATEGORY = '13065';
 const MAX_RADIUS_M = 100_000;
+// Oversample so we still hit RESULT_LIMIT distinct establishments after the
+// dedupe pass collapses chain duplicates. Foursquare's max limit per request
+// is 50; we don't paginate beyond that for v1.
+const FSQ_REQUEST_LIMIT = '50';
+const RESULT_LIMIT = 20;
 
 function firstString(value: string | string[] | undefined): string | undefined {
   if (Array.isArray(value)) return value[0];
@@ -46,7 +51,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     radius: String(radius),
     categories: FOOD_CATEGORY,
     query: q,
-    limit: '20',
+    limit: FSQ_REQUEST_LIMIT,
   });
 
   let upstream: Response;
@@ -76,7 +81,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const deduped = dedupeByNameKeepingClosest(data.results ?? []);
   const results = deduped
     .map(mapFoursquareResult)
-    .filter((p): p is NonNullable<typeof p> => p !== null);
+    .filter((p): p is NonNullable<typeof p> => p !== null)
+    .slice(0, RESULT_LIMIT);
 
   return res.status(200).json({ results });
 }

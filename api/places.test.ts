@@ -133,6 +133,56 @@ describe('/api/places', () => {
     );
     expect(res.statusCode).toBe(502);
   });
+
+  it('returns at most 20 results, replacing duplicates with extra unique results', async () => {
+    // Foursquare returns 35 raw items: a Shake Shack appears 10 times mixed in
+    // amongst 25 distinct other places. After dedup we should have 26 unique
+    // names; after slicing to 20 we should see 20 unique results. The previous
+    // limit-20 behavior would have left only ~16 unique places (20 raw - 4
+    // chain duplicates eaten by Shake Shack appearances).
+    const shakes = Array.from({ length: 10 }, (_, i) => ({
+      fsq_place_id: `shake-${i}`,
+      name: 'Shake Shack',
+      latitude: 40,
+      longitude: -74,
+      location: { formatted_address: 'somewhere' },
+      categories: [{ name: 'Burger Joint' }],
+      distance: 500 + i,
+    }));
+    const uniques = Array.from({ length: 25 }, (_, i) => ({
+      fsq_place_id: `unique-${i}`,
+      name: `Place ${i}`,
+      latitude: 40,
+      longitude: -74,
+      location: { formatted_address: '1 Test St' },
+      categories: [{ name: 'Restaurant' }],
+      distance: 1000 + i,
+    }));
+    // Interleave so Shake Shacks are scattered amongst the unique items.
+    const interleaved: typeof shakes = [];
+    for (let i = 0; i < 35; i++) {
+      if (i % 3 === 0 && shakes.length > 0) interleaved.push(shakes.shift()!);
+      else if (uniques.length > 0) interleaved.push(uniques.shift()!);
+      else if (shakes.length > 0) interleaved.push(shakes.shift()!);
+    }
+    const upstream = { results: interleaved };
+    (globalThis.fetch as ReturnType<typeof vi.fn>).mockResolvedValue(
+      new Response(JSON.stringify(upstream), { status: 200 }),
+    );
+    const res = mockRes();
+    await handler(
+      { method: 'GET', query: { lat: '40', lng: '-74', q: 'food' } } as never,
+      res as never,
+    );
+    expect(res.statusCode).toBe(200);
+    const results = (res.body as { results: Array<{ name: string }> }).results;
+    expect(results).toHaveLength(20);
+    const names = results.map((r) => r.name);
+    const uniqueNames = new Set(names);
+    expect(uniqueNames.size).toBe(20);
+    // Shake Shack should appear once (not 10x)
+    expect(names.filter((n) => n === 'Shake Shack')).toHaveLength(1);
+  });
 });
 
 describe('dedupeByNameKeepingClosest', () => {
