@@ -1,10 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import { AppStateProvider, useAppDispatch } from './state/AppStateProvider';
 import { usePersistence } from './state/usePersistence';
+import { useShareHydration } from './state/useShareHydration';
 import { ToastProvider } from './components/Toast';
 import { MapView } from './components/MapView';
 import { PanelShell } from './components/PanelShell';
+import { ShareDialog } from './components/ShareDialog';
 import { getUserLocation } from './lib/geolocation';
 
 function GeolocateOnMount() {
@@ -35,13 +37,24 @@ function PersistenceMount() {
   return null;
 }
 
+function HydrateFromShareMount() {
+  useShareHydration();
+  return null;
+}
+
 function AppInner() {
+  const [shareOpen, setShareOpen] = useState(false);
   return (
     <div className="app">
-      <GeolocateOnMount />
+      <HydrateFromShareMount />
       <PersistenceMount />
+      <GeolocateOnMount />
       <MapView />
       <PanelShell />
+      <button className="share-button" onClick={() => setShareOpen(true)}>
+        Share
+      </button>
+      <ShareDialog open={shareOpen} onClose={() => setShareOpen(false)} />
     </div>
   );
 }
