@@ -44,16 +44,3 @@ export async function fetchPlaces(args: {
 export async function geocode(q: string): Promise<GeocodeResponse> {
   return await get<GeocodeResponse>(`/api/geocode?q=${encodeURIComponent(q)}`);
 }
-
-export async function fetchPhoto(fsqId: string): Promise<string | null> {
-  try {
-    const res = await fetch(`/api/photos?fsq_id=${encodeURIComponent(fsqId)}`, {
-      headers: { Accept: 'application/json' },
-    });
-    if (!res.ok) return null;
-    const body = (await res.json()) as { photoUrl?: string | null };
-    return body.photoUrl ?? null;
-  } catch {
-    return null;
-  }
-}

@@ -54,15 +54,6 @@ describe('share codec', () => {
     expect(bogus).not.toBe('');
   });
 
-  it('strips photoUrl from saved places when encoding', async () => {
-    const encoded = await encodeShareState({
-      saved: [{ ...PLACE, photoUrl: 'https://photo.example/x.jpg' }],
-      itinerary: EMPTY_ITINERARY,
-    });
-    const decoded = await decodeShareState(encoded);
-    expect(decoded!.saved[0].photoUrl).toBeUndefined();
-  });
-
   it('drops unknown meal slots but keeps the rest of the payload', async () => {
     const json = JSON.stringify({
       saved: [PLACE],

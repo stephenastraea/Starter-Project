@@ -39,13 +39,6 @@ function PlacePopup({ place }: { place: Place }) {
   const state = useAppState();
   const showToast = useToast();
   const isSaved = state.saved.some((p) => p.fsq_id === place.fsq_id);
-  // The popup re-mounts on each click — read the freshest photoUrl from
-  // search results / saved / itinerary if any branch has it.
-  const photoUrl =
-    place.photoUrl ??
-    state.results.find((r) => r.fsq_id === place.fsq_id)?.photoUrl ??
-    state.saved.find((r) => r.fsq_id === place.fsq_id)?.photoUrl ??
-    null;
 
   const openGoogle = () => {
     const win = window.open(place.googleUrl, '_blank', 'noopener');
@@ -54,13 +47,6 @@ function PlacePopup({ place }: { place: Place }) {
 
   return (
     <div className="pin-popup">
-      {photoUrl && (
-        <div
-          className="pin-popup__photo"
-          style={{ backgroundImage: `url(${photoUrl})` }}
-          aria-hidden="true"
-        />
-      )}
       <h3 className="pin-popup__name">{place.name}</h3>
       <p className="pin-popup__meta">{place.categories[0] ?? 'Restaurant'}</p>
       <div className="pin-popup__actions">
