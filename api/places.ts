@@ -73,9 +73,32 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(502).json({ error: 'Bad upstream response' });
   }
 
-  const results = (data.results ?? [])
+  const deduped = dedupeByNameKeepingClosest(data.results ?? []);
+  const results = deduped
     .map(mapFoursquareResult)
     .filter((p): p is NonNullable<typeof p> => p !== null);
 
   return res.status(200).json({ results });
+}
+
+// Keep only the closest result per (case-insensitive, trimmed) name.
+// Distance is taken from Foursquare's `distance` field (meters from search
+// center). If `distance` is missing, the first occurrence wins.
+export function dedupeByNameKeepingClosest(raws: FsqRaw[]): FsqRaw[] {
+  const bestByName = new Map<string, FsqRaw>();
+  const seenOrder: string[] = [];
+  for (const raw of raws) {
+    if (!raw.name) continue;
+    const key = raw.name.trim().toLowerCase();
+    const existing = bestByName.get(key);
+    if (!existing) {
+      bestByName.set(key, raw);
+      seenOrder.push(key);
+      continue;
+    }
+    const existingD = typeof existing.distance === 'number' ? existing.distance : Infinity;
+    const currentD = typeof raw.distance === 'number' ? raw.distance : Infinity;
+    if (currentD < existingD) bestByName.set(key, raw);
+  }
+  return seenOrder.map((k) => bestByName.get(k)!);
 }

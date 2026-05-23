@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import handler from './places';
+import handler, { dedupeByNameKeepingClosest } from './places';
+import type { FsqRaw } from './_lib/foursquare';
 
 type MockRes = {
   statusCode: number;
@@ -131,5 +132,66 @@ describe('/api/places', () => {
       res as never,
     );
     expect(res.statusCode).toBe(502);
+  });
+});
+
+describe('dedupeByNameKeepingClosest', () => {
+  function raw(name: string, distance: number, id = name): FsqRaw {
+    return { fsq_place_id: id, name, distance };
+  }
+
+  it('keeps the closest result when names match', () => {
+    const out = dedupeByNameKeepingClosest([
+      raw('Shake Shack', 3286, 'a'),
+      raw('Shake Shack', 1616, 'b'),
+      raw('Shake Shack', 4500, 'c'),
+    ]);
+    expect(out).toHaveLength(1);
+    expect(out[0].fsq_place_id).toBe('b');
+  });
+
+  it('does not collapse different names', () => {
+    const out = dedupeByNameKeepingClosest([
+      raw('Shake Shack', 1000),
+      raw('5 Napkin Burger', 2000),
+      raw('Corner Bistro', 3000),
+    ]);
+    expect(out.map((r) => r.name)).toEqual(['Shake Shack', '5 Napkin Burger', 'Corner Bistro']);
+  });
+
+  it('treats name matching as case-insensitive and trim-insensitive', () => {
+    const out = dedupeByNameKeepingClosest([
+      raw('Shake Shack', 3000, 'a'),
+      raw(' shake shack ', 1000, 'b'),
+    ]);
+    expect(out).toHaveLength(1);
+    expect(out[0].fsq_place_id).toBe('b');
+  });
+
+  it('preserves the first-seen ordering of surviving names', () => {
+    const out = dedupeByNameKeepingClosest([
+      raw('B', 2000),
+      raw('A', 1000),
+      raw('B', 500), // closer B than first
+      raw('C', 3000),
+    ]);
+    expect(out.map((r) => r.name)).toEqual(['B', 'A', 'C']);
+  });
+
+  it('skips entries without a name', () => {
+    const out = dedupeByNameKeepingClosest([
+      { fsq_place_id: 'no-name', distance: 1 } as FsqRaw,
+      raw('Shake Shack', 1000),
+    ]);
+    expect(out.map((r) => r.name)).toEqual(['Shake Shack']);
+  });
+
+  it('falls back to first-seen when distance is missing', () => {
+    const out = dedupeByNameKeepingClosest([
+      { fsq_place_id: 'a', name: 'Joe', distance: undefined } as FsqRaw,
+      { fsq_place_id: 'b', name: 'Joe', distance: undefined } as FsqRaw,
+    ]);
+    expect(out).toHaveLength(1);
+    expect(out[0].fsq_place_id).toBe('a');
   });
 });

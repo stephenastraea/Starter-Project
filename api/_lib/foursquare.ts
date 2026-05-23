@@ -13,6 +13,7 @@ export type FsqRaw = {
   geocodes?: { main?: { latitude?: number; longitude?: number } }; // legacy v3
   location?: { formatted_address?: string };
   categories?: Array<{ name?: string }>;
+  distance?: number; // meters from search center; used for dedup
   rating?: number;
   stats?: { total_tips?: number };
 };
