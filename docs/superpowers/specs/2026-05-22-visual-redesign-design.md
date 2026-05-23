@@ -3,7 +3,19 @@
 **Date:** 2026-05-22
 **Owner:** stephen@tryastraea.com
 **Scope:** Scope 2 — full visual restyle + Foursquare photo integration. No layout reorganization; no new product features.
-**Status:** Design approved, awaiting implementation plan.
+**Status:** Shipped to production 2026-05-23 (PR #3, merged to `stephenastraea/Starter-Project:main`).
+
+## Post-implementation note (2026-05-23)
+
+The visual redesign shipped, but **the entire Phase 5 photo subsystem was reverted before merge**. Foursquare's `/places/{fsq_place_id}/photos` endpoint is a Premium-tier feature; the account's free credits are exhausted and it returns `HTTP 429 "no API credits remaining"`. Rather than ship a feature that silently doesn't work, we ripped out the plumbing:
+
+- Deleted: `api/photos.ts` + tests, `src/components/usePhoto.ts` + tests, `src/lib/api-client.test.ts`, `fetchPhoto`, `SET_PLACE_PHOTO` reducer action
+- Removed: `photoUrl` field on `Place`, photo-strip from share-codec, photo-loading effect from `RestaurantCard`
+- Kept: `RestaurantCard.tsx` as the shared card shell, the cream-to-sand gradient + Fraunces-italic letter placeholder
+
+The letter placeholder turns out to be quite editorial on its own and is what's currently shipping. If we later enable Foursquare billing, the cleanest re-introduction is to look at PRs / commits leading up to commit `1581714` for the full removal diff and reverse it.
+
+Sections below describing the photo subsystem (Phase 5 in "Implementation order", the "Photo integration" section, and `photoUrl`-related items in the files table) describe what was built and then unbuilt — leaving them in the spec for archaeology but they don't reflect current code.
 
 ## Goal
 
