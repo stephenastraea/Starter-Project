@@ -9,7 +9,19 @@ export function ResultList({ onAddToItinerary }: { onAddToItinerary: (place: Pla
   const showToast = useToast();
 
   if (state.searching) {
-    return <div className="result-list result-list--empty">Looking nearby…</div>;
+    return (
+      <ul className="result-list" aria-busy="true">
+        {[0, 1, 2].map((i) => (
+          <li key={i} className="result-list__shimmer">
+            <div className="result-list__shimmer-photo" />
+            <div className="result-list__shimmer-body">
+              <div className="result-list__shimmer-line result-list__shimmer-line--medium" />
+              <div className="result-list__shimmer-line result-list__shimmer-line--short" />
+            </div>
+          </li>
+        ))}
+      </ul>
+    );
   }
   if (state.searchError) {
     return <div className="result-list result-list--empty">{state.searchError}</div>;

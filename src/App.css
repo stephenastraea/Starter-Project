@@ -837,3 +837,56 @@ html, body, #root {
 .leaflet-control-attribution a {
   color: var(--color-terracotta) !important;
 }
+
+.result-list__shimmer {
+  display: flex;
+  gap: var(--space-3);
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-3);
+  overflow: hidden;
+  height: 88px;
+}
+
+.result-list__shimmer-photo {
+  width: 88px;
+  background: linear-gradient(
+    90deg,
+    var(--surface-border) 0%,
+    #efe0c4 50%,
+    var(--surface-border) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+.result-list__shimmer-body {
+  flex: 1;
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+}
+
+.result-list__shimmer-line {
+  height: 12px;
+  background: linear-gradient(
+    90deg,
+    var(--surface-border) 0%,
+    #efe0c4 50%,
+    var(--surface-border) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+  border-radius: var(--radius-sm);
+}
+
+.result-list__shimmer-line--short { width: 40%; }
+.result-list__shimmer-line--medium { width: 70%; }
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
