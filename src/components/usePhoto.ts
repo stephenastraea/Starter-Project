@@ -31,7 +31,7 @@ export function usePhoto(
     if (!fsqId) return;
     if (initialPhotoUrl) return;
     if (cache.has(fsqId)) {
-      setPhotoUrl(cache.get(fsqId) ?? null);
+      Promise.resolve().then(() => setPhotoUrl(cache.get(fsqId) ?? null));
       return;
     }
 

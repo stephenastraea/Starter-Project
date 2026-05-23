@@ -11,8 +11,8 @@ class FakeIntersectionObserver {
     this.callback = cb;
     FakeIntersectionObserver.lastInstance = this;
   }
-  observe(_target: Element) {}
-  unobserve(_target: Element) {}
+  observe() {}
+  unobserve() {}
   disconnect() {}
   trigger(isIntersecting: boolean) {
     this.callback(
